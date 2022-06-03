@@ -1,11 +1,14 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
-    <div v-for="(todo, index) in todos" :key="todo.id">
-      <li class="todo-item">
-        {{ todo.title }}
+    <div v-for="(todo, index) in todos" :key="todo.id" class="todo-item">
+      <div>
+        <div>{{ todo.title }}</div>
+
+      </div>
+      <div>
         <button @click="removeTodo(index)" class="remove-item">&times;</button>
-      </li>
+      </div>
     </div>
   </div>
 </template>
