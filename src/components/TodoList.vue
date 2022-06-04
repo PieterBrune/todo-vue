@@ -48,12 +48,11 @@ export default {
   },
   methods: {
     addTodo() {
-
       if (this.newTodo.trim().length === 0) {
         return
       }
 
-      this.todos.push({id: id++, title: this.newTodo, completed: false, editing: false })
+      this.todos.push({ id: id++, title: this.newTodo, completed: false, editing: false })
 
       this.newTodo = ''
     },
