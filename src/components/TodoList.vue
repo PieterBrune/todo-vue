@@ -8,7 +8,15 @@
         <input v-else class="todo-item-edit" type="text" v-model="todo.title" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)" v-focus>
       </div>
       <div>
-        <button @click="removeTodo(index)" class="remove-item">&times;</button>
+        <div @click="removeTodo(index)" class="remove-item">&times;</div>
+      </div>
+    </div>
+    <div class="extra-container">
+      <div>
+        <label><input type="checkbox">Check All</label>
+      </div>
+      <div>
+        {{ remaining }} items left
       </div>
     </div>
   </div>
@@ -38,6 +46,11 @@ export default {
           editing: false
         }
       ]
+    }
+  },
+  computed: {
+    remaining() {
+      return this.todos.filter(todo => !todo.completed).length
     }
   },
   directives: {
@@ -136,5 +149,33 @@ export default {
   .completed {
     text-decoration: line-through;
     color: grey;
+  }
+
+  .extra-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    border-top: 1px solid lightgrey;
+    padding-top: 14px;
+    margin-bottom: 14px;
+  }
+
+  button {
+    font-size: 14px;
+    background-color: white;
+    appearance: none;
+  }
+
+  button:hover {
+    background: lightgreen;
+  }
+
+  button:focus {
+    outline: none;
+  }
+
+  .active {
+    background: lightgreen;
   }
 </style>
