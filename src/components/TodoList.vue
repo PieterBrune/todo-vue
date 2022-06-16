@@ -1,16 +1,19 @@
 <template>
   <div>
     <input type="text" class="todo-input" placeholder="What needs to be done" v-model="newTodo" @keyup.enter="addTodo">
-    <div v-for="(todo, index) in todosFiltered" :key="todo.id" class="todo-item">
-      <div class="todo-item-left">
-      <input type="checkbox" v-model="todo.completed">
-        <div v-if="!todo.editing" @dblclick="editTodo(todo)" class="todo-item-label" :class="{ completed : todo.completed }">{{ todo.title }}</div>
-        <input v-else class="todo-item-edit" type="text" v-model="todo.title" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)" v-focus>
+    <transition-group tag="div" name="list">
+      <div v-for="(todo, index) in todosFiltered" :key="todo.id" class="todo-item">
+        <div class="todo-item-left">
+          <input type="checkbox" v-model="todo.completed">
+          <div v-if="!todo.editing" @dblclick="editTodo(todo)" class="todo-item-label" :class="{ completed : todo.completed }">{{ todo.title }}</div>
+          <input v-else class="todo-item-edit" type="text" v-model="todo.title" @blur="doneEdit(todo)" @keyup.enter="doneEdit(todo)" @keyup.esc="cancelEdit(todo)" v-focus>
+        </div>
+        <div @click="removeTodo(index)" class="remove-item">
+          &times;
+        </div>
       </div>
-      <div>
-        <div @click="removeTodo(index)" class="remove-item">&times;</div>
-      </div>
-    </div>
+    </transition-group>
+
     <div class="extra-container">
       <div>
         <label><input type="checkbox" :checked="!anyRemaining" @change="checkAllTodos">Check All</label>
@@ -28,7 +31,9 @@
       </div>
 
       <div>
-        <button v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</button>
+        <transition name="fade" mode="out-in">
+          <button v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</button>
+        </transition>
       </div>
 
     </div>
@@ -131,6 +136,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+ /* @import url ("https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css");*/
 
   .todo-input {
     width: 100%;
@@ -216,4 +222,27 @@ export default {
   .active {
     background: lightgreen;
   }
+
+  .fade-enter, .fade-leave-to {
+    opacity: 0;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .list-enter {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  .list-enter-to {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .list-enter-active {
+    transition: all .5s ease;
+  }
+
 </style>
